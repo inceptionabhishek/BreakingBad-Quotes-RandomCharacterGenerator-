@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
-
+import Header from "./components/Header";
+import "./index.css";
+import React, { useState } from "react";
+import QuotesContentDisplay from "./components/QuotesContentDisplay";
+import RandomCharacters from "./components/RandomCharacters";
+ const api = {
+   base: "https://breaking-bad-quotes.herokuapp.com/v1/quotes/10",
+ };
 function App() {
+  const [quotes, setQuotes] =useState([]);
+const handleClick =  () => {
+  fetch(api.base)
+    .then((res) => res.json())
+    .then((result) => {
+      setQuotes(result);
+      console.log(result);
+      console.log(quotes);
+    });
+};
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div >
+      <Header />
+      <button className="btn" onClick={handleClick}>
+        Get Random Quote
+      </button>
+      <div>
+        {quotes.map((values) => (
+          <QuotesContentDisplay text={values.quote} Actor={values.author} />
+        ))}
+      </div>
+      <RandomCharacters />
     </div>
   );
 }
